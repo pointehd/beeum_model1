@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myArea">
+
+	<delete id="delete" parameterType="int">
+		delete my_Area
+		where no_user = #{noUser} 
+	</delete>
+	
+	
+	<insert id="insert" parameterType="MyArea">
+		insert into my_area(NO_AREA, NO_CITY, NO_USER)
+		values(my_area_seq.nextval, #{noCity}, #{noUser})
+	</insert>
+	
+	<select id="selectListByUser" parameterType="int" resultType="MyArea">
+		select no_Area noArea, no_city noCity
+		from My_Area
+		where no_user = #{no}
+	</select>
+	
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

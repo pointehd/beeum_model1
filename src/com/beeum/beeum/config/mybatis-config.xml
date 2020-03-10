@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  <configuration>
+  
+  		<!-- null 입력 허용 -->
+	<settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+  <!-- 경로를 별칭으로 쉽게 지정할수 있다. -->
+  		<typeAliases>
+  			<typeAlias alias="PageVO" type="com.beeum.beeum.vo.PageVO"/>
+  			<typeAlias alias="AvalBee" type="com.beeum.beeum.vo.AvalBee"/>
+  			<typeAlias alias="AvalLang" type="com.beeum.beeum.vo.AvalLang"/>
+  			<typeAlias alias="Career" type="com.beeum.beeum.vo.Career"/>
+  			<typeAlias alias="City" type="com.beeum.beeum.vo.City"/>
+  			<typeAlias alias="Contact" type="com.beeum.beeum.vo.Contact"/>
+  			<typeAlias alias="Course" type="com.beeum.beeum.vo.Course"/>
+  			<typeAlias alias="CourseCategory" type="com.beeum.beeum.vo.CourseCategory"/>
+  			<typeAlias alias="HoneyHistory" type="com.beeum.beeum.vo.HoneyHistory"/>
+  			<typeAlias alias="HoneyUse" type="com.beeum.beeum.vo.HoneyUse"/>
+  			<typeAlias alias="Language" type="com.beeum.beeum.vo.Language"/>
+  			<typeAlias alias="License" type="com.beeum.beeum.vo.License"/>
+  			<typeAlias alias="Message" type="com.beeum.beeum.vo.Message"/>
+  			<typeAlias alias="MyArea" type="com.beeum.beeum.vo.MyArea"/>
+  			<typeAlias alias="Payment" type="com.beeum.beeum.vo.Payment"/>
+  			<typeAlias alias="PointHistory" type="com.beeum.beeum.vo.PointHistory"/>
+  			<typeAlias alias="Profile" type="com.beeum.beeum.vo.Profile"/>
+  			<typeAlias alias="ProfilePic" type="com.beeum.beeum.vo.ProfilePic"/>
+  			<typeAlias alias="Report" type="com.beeum.beeum.vo.Report"/>
+  			<typeAlias alias="RequestTheme" type="com.beeum.beeum.vo.RequestTheme"/>
+  			<typeAlias alias="RequestTour" type="com.beeum.beeum.vo.RequestTour"/>
+  			<typeAlias alias="ReviewPic" type="com.beeum.beeum.vo.ReviewPic"/>
+  			<typeAlias alias="ScheduleTime" type="com.beeum.beeum.vo.ScheduleTime"/>
+  			<typeAlias alias="SuggestTour" type="com.beeum.beeum.vo.SuggestTour"/>
+  			<typeAlias alias="ToLocalReview" type="com.beeum.beeum.vo.ToLocalReview"/>
+  			<typeAlias alias="ToTravelerReview" type="com.beeum.beeum.vo.ToTravelerReview"/>
+  			<typeAlias alias="Tour" type="com.beeum.beeum.vo.Tour"/>
+  			<typeAlias alias="TourArea" type="com.beeum.beeum.vo.TourArea"/>
+  			<typeAlias alias="TourLang" type="com.beeum.beeum.vo.TourLang"/>
+  			<typeAlias alias="TourPic" type="com.beeum.beeum.vo.TourPic"/>
+  			<typeAlias alias="TourTerm" type="com.beeum.beeum.vo.TourTerm"/>
+  			<typeAlias alias="TravelersDetail" type="com.beeum.beeum.vo.TravelersDetail"/>
+  			<typeAlias alias="User" type="com.beeum.beeum.vo.User"/>
+  			<typeAlias alias="Wish" type="com.beeum.beeum.vo.Wish"/>
+  			<typeAlias alias="Review" type="com.beeum.beeum.vo.Review"/>
+  			<typeAlias alias="FilterVO" type="com.beeum.beeum.vo.FilterVO"/>
+  			
+  		</typeAliases>
+  
+  <!--  DBMS와 연결하는 환경설정  -->
+    <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="JNDI">
+      		<property name="data_source"
+      				  value="java:comp/env/oraclexe"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <!-- 맵퍼 설정 ! -->
+  <mappers>
+		<mapper resource="com/beeum/beeum/mapper/avalBees.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/avalLang.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/careers.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/city.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/contacts.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/courses.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/courseCategories.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/honeyHistory.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/honeyUse.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/languages.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/license.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/message.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/myArea.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/payment.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/pointHistory.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/profiles.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/profilePics.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/report.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/requestTheme.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/requestTours.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/reviewPics.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/scheduleTime.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/suggestTours.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/tours.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/tourArea.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/tourLang.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/tourPics.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/tourTerms.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/toLocalReviews.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/toTravelerReviews.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/travelersDetail.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/users.xml"/>
+		<mapper resource="com/beeum/beeum/mapper/wish.xml"/>
+	</mappers>
+  
+  </configuration>

@@ -1,0 +1,946 @@
+
+.head_wrap {
+    background-color: #FAE100;
+    height: 110px;
+    width: 100%;
+    position: relative;
+}
+
+.content_wrap {
+    width: 100%;
+    position: relative;
+    min-height: 400px;
+    background: transparent;
+    margin: auto;
+}
+
+.header {
+    position: relative;
+    width: 1080px;
+    height: 110px;
+    background-color: #FAE100;
+    margin: auto;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.slogan {
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    font-family: 'Nanum Gothic Coding', monospace;
+    padding: 10px;
+}
+
+.slogan_text {
+    color: #3B3C3C;
+}
+
+.top.left {
+    padding: 5px;
+}
+
+.underline {
+    display: inline;
+    position: relative;
+    overflow: hidden;
+}
+
+.underline:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -5px;
+    background: #3B3C3C;
+    height: 3px;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.underline:hover:after,
+.underline:focus:after,
+.underline:active:after {
+    right: 0;
+}
+
+.right {
+    width: 100px;
+}
+
+.top {
+    text-decoration: none;
+    color: #3B3C3C;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+.header_left {
+    display: inline-block;
+    text-align: center;
+    margin: 15px;
+    display: inline-block;
+    position: absolute;
+    bottom: 10px;
+}
+
+.header a.top:hover {
+    /*color: #212121;*/
+}
+
+h2 {
+    margin-top: 2px;
+}
+
+.header .language {
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 18px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px;
+    font-weight: bold;
+    /*background: transparent;*/
+    /*border-radius: 10px 10px 0 0;*/
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    width: 110px;
+}
+
+/*.content {*/
+    /*width: 1080px;*/
+    /*min-height: 900px;*/
+    /*!*background: gray;*!*/
+    /*margin: auto;*/
+    /*position: relative;*/
+    /*border-left: 1px solid #FFEE58;*/
+    /*border-right: 1px solid #FFEE58;*/
+/*}*/
+
+.footer {
+    width: 1080px;
+    height: 342px;
+    background: #FFFFFF;
+    margin: auto;
+    position: relative;
+}
+
+.foot_wrap {
+    border-top: 3px solid #FAE100;
+    background-color: #FFFFFF;
+    height: 342px;
+    width: 100%;
+    position: relative;
+}
+
+.foot_wrap.fixed {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.space {
+    width: 1080px;
+    height: 30px;
+    background-color: transparent;
+}
+
+.bot_wrap1 {
+    width: 440px;
+    height: 242px;
+    float: left;
+}
+
+.bot_wrap2 {
+    width: 210px;
+    height: 242px;
+    float: left;
+}
+
+.bot_wrap3 {
+    width: 430px;
+    height: 242px;
+    float: left;
+    display: inline-block;
+}
+
+.bottom.section {
+    color: #3B3C3C;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+    margin: 20px;
+}
+
+.bottom.address {
+    text-decoration: none;
+    color: #3B3C3C;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+    margin-top: 30px;
+    text-indent: 20px;
+}
+
+.bottom.contents {
+    color: #3B3C3C;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+    text-indent: 20px;
+    margin-top: 15px;
+}
+
+.contents.link {
+    text-decoration: none;
+    color: #BDBDBD;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+    margin: 10px;
+    display: inline-block;
+    text-indent: 10px;
+}
+
+.contents.link:hover {
+    color: #3B3C3C;
+}
+
+.company_name {
+    text-indent: 110px;
+    margin-top: 10px;
+}
+
+.copyrights {
+    font-size: 15px;
+    font-weight: bold;
+    color: #3B3C3C;
+    display: inline-block;
+    text-align: center;
+    font-family: 'Nanum Gothic Coding', monospace;
+    display: block;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+.navigator {
+    position: fixed;
+    width: 70px;
+    height: 150px;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 1px solid #FAE100;
+    right: 100px;
+    top: 200px;
+}
+
+.to_top {
+    width: 70px;
+    height: 50px;
+    border-bottom: 1px solid #FAE100;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+}
+
+.to_bottom {
+    width: 70px;
+    height: 50px;
+    border-top: 1px solid #FAE100;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+}
+
+.navigator .fas.fa-angle-up {
+    font-size: 50px;
+    width: 70px;
+    text-indent: 20px;
+    color: #BDBDBD;
+}
+
+.navigator .fas.fa-angle-down {
+    font-size: 50px;
+    display: block;
+    width: 70px;
+    margin: auto;
+    text-indent: 20px;
+    position: absolute;
+    color: #BDBDBD;
+}
+
+.help {
+    line-height: 50px;
+    font-family: 'Nanum Gothic Coding', monospace;
+    vertical-align: middle;
+    font-weight: bold;
+    text-indent: 2px;
+    display: block;
+}
+
+.help button {
+    outline: none;
+    border: none;
+}
+
+.navigation {
+    color: #3B3C3C;
+    font-size: 14px;
+    height: 50px;
+    font-weight: bolder;
+    background: none;
+    padding: 5px;
+}
+
+.navigation:hover {
+    color: #3B3C3C;
+    cursor: pointer;
+}
+
+.navigator button:hover {
+    display: inline-block;
+    transform: scale(1.1);
+}
+
+.navigator  .fas.fa-angle-down:hover {
+    background-color: white;
+    color: #FAE100;
+    border-radius: 0 0 10px 10px;
+}
+
+.navigator .fas.fa-angle-up:hover {
+    background-color: white;
+    color: #FAE100;
+    border-radius: 10px 10px 0 0;
+}
+
+.keyword-search-form {
+    display: none;
+    float: left;
+    font-size: 18px;
+    width: 200px;
+    position: absolute;
+    top: 65px;
+    right: 255px;
+}
+
+.keyword-search-icon {
+    right: 100px;
+    width: 200px;
+}
+
+.input_search {
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
+    border: 1px solid #BDBDBD;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: transparent;
+    outline: none;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+    top: -8px;
+    right: 20px;
+}
+
+.keyword-search-form a {
+    color: #BDBDBD;
+    position: relative;
+    top: -7px;
+    right: 20px;
+}
+
+.search {
+    text-decoration: none;
+    color: #616161;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    position: absolute;
+    border-radius: 10px;
+    cursor: pointer;
+    top: 65px;
+}
+
+
+.header_right {
+    display: inline-block;
+    text-align: right;
+    margin: 15px;
+    position: absolute;
+    width: 150px;
+    right: 100px;
+    bottom: 10px;
+    vertical-align: center;
+    height: 18px;
+}
+
+.header_right.on {
+    display: inline-block;
+}
+
+.header_left .on {
+	border-bottom:4px solid #3b3c3c;
+}
+
+#header_rightBox {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 65px;
+    width: 250px;
+    height: 30px;
+}
+
+#registerForm {
+    width: 700px;
+    height: 500px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -350px;
+    margin-top: -250px;
+    border: 1px solid #424242;
+    box-shadow: 0 0 10px 0.5px #FFFFFF;
+}
+
+#registerPopup {
+    background: rgba(0, 0, 0, .8);
+    display: none;
+    z-index: 1000;
+}
+
+.full {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    background-color: #424242;
+    z-index: 2;
+}
+
+.cancel {
+    height: 60px;
+    background-color: #FAE100;
+}
+
+#cancel {
+    font-size: 40px;
+    height: 46px;
+    width: 54px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    color: #9E9E9E;
+    background-color: transparent;
+    border-radius: 20px;
+    outline: none;
+}
+
+#cancel:hover {
+    color: #424242;
+}
+
+#cancel:active {
+    color: #424242;
+}
+
+#registerFormTitle h1 {
+    text-align: center;
+    text-decoration: underline;
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 25px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+#registerTerms {
+    border: 1px solid #424242;
+    width: 570px;
+    position: absolute;
+    text-align: left;
+    margin-left: 65px;
+    line-height: 40px;
+    font-family: 'Nanum Gothic Coding', monospace;
+    vertical-align: middle;
+    height: 40px;
+    top: 115px;
+}
+
+.agree_check {
+    display: none;
+}
+
+.lbl_agree .unchecked {
+    display: inline;
+}
+
+.lbl_agree .checked {
+    display: none;
+    color: #00C853;
+}
+
+.lbl_agree.check .unchecked {
+    display: none;
+}
+
+.lbl_agree.check .checked {
+    display: inline;
+}
+
+.checked, .unchecked {
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+strong.agreement {
+    position: absolute;
+    left: 7px;
+}
+
+#nameInput {
+    position: relative;
+    height: 40px;
+    width: 572px;
+    top: 90px;
+    margin: auto;
+}
+
+#emailInput {
+    position: relative;
+    height: 40px;
+    width: 572px;
+    top: 120px;
+    margin: auto;
+}
+
+#pwdWrapper {
+    position: relative;
+    width: 572px;
+    margin-left: 64px;
+}
+
+#pwdInput {
+    position: absolute;
+    height: 40px;
+    width: 250px;
+    top: 150px;
+    margin-left: 0px;
+
+}
+
+#pwdConfirm {
+    position: absolute;
+    height: 40px;
+    width: 250px;
+    top: 150px;
+    right: 0;
+}
+
+.register_button {
+    position: relative;
+    width: 572px;
+    height: 40px;
+    top: 230px;
+    left: 64px;
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 5px 0 0 gray;
+    background-color: #FAE100;
+    transition: 0.2s ease;
+    border: none;
+    border-radius: 3px 3px 1px 1px;
+}
+
+.register_button:active {
+    box-shadow: 0 3px 0 0 #424242;
+    background-color: #FBC02D;
+    transform: translate(0, 3px);
+}
+
+.beeum {
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 15px;
+    color: #00B0FF;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.beeum:hover {
+    color: #0091EA;
+}
+
+.beeum:active {
+    color: #0091EA;
+}
+
+.name_label {
+    position: absolute;
+    left: 64px;
+    top: 175px;
+}
+
+.name_input {
+    width: 390px;
+    height: 34px;
+    font-size: 16px;
+}
+
+.email_label {
+    position: absolute;
+    left: 64px;
+    top: 245px;
+}
+
+.email_input {
+    width: 570px;
+    height: 34px;
+    font-size: 16px;
+}
+
+.pwd_labelone {
+    position: absolute;
+    left: 0px;
+    top: 130px;
+}
+
+.pwd_inputone {
+    width: 246px;
+    height: 34px;
+    font-size: 16px;
+}
+
+.pwd_labeltwo {
+    position: absolute;
+    left: 320px;
+    top: 130px;
+}
+
+.pwd_inputtwo {
+    width: 246px;
+    height: 34px;
+    font-size: 16px;
+}
+
+#toLogIn {
+    position: absolute;
+    bottom: 12px;
+    left: 120px;
+}
+
+.cancel_login {
+    height: 60px;
+    background-color: #FAE100;
+}
+
+#cancelLogin {
+    font-size: 40px;
+    height: 46px;
+    width: 54px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    color: #9E9E9E;
+    background-color: transparent;
+    border-radius: 20px;
+    outline: none;
+}
+
+#cancelLogin:hover {
+    color: #424242;
+}
+
+#cancelLogin:active {
+    color: #424242;
+}
+
+.full {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    background-color: #424242;
+    z-index: 2;
+}
+
+#logInPopup {
+    background: rgba(0, 0, 0, .8);
+    display: none;
+    z-index: 1000;
+}
+
+#logInForm {
+    width: 350px;
+    height: 400px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -175px;
+    margin-top: -200px;
+    border: 1px solid #424242;
+    box-shadow: 0 0 10px 0.5px #FFFFFF;
+}
+
+#logInTitle h1 {
+    text-align: center;
+    text-decoration: underline;
+    font-family: 'Gothic A1', sans-serif;
+    font-size: 25px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.logInEmail_label {
+    position: relative;
+    left: 22px;
+    top: 8px;
+}
+
+.logInEmail_input {
+    position: relative;
+    width: 300px;
+    height: 34px;
+    font-size: 16px;
+    top: 10px;
+    left: 22px;
+}
+
+.login_pwd_label {
+    position: relative;
+    left: 22px;
+    top: 23px;
+}
+
+.login_pwd_input {
+    position: relative;
+    width: 300px;
+    height: 34px;
+    font-size: 16px;
+    top: 25px;
+    left: 22px;
+}
+
+#findPwdWrapper {
+    position: relative;
+    left: 22px;
+    top: 40px;
+}
+
+.login_button {
+    position: relative;
+    width: 300px;
+    height: 34px;
+    top: 80px;
+    left: 22px;
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 5px 0 0 gray;
+    background-color: #FAE100;
+    transition: 0.2s ease;
+    border: none;
+    border-radius: 3px 3px 1px 1px;
+}
+
+.login_button:active {
+    box-shadow: 0 3px 0 0 #424242;
+    background-color: #FBC02D;
+    transform: translate(0, 3px);
+}
+
+#toRegister {
+    position: absolute;
+    bottom: 12px;
+    left: 33px;
+}
+
+#findPwdPopup {
+    background: rgba(0, 0, 0, .8);
+    display: none;
+    z-index: 1000;
+}
+
+#findPwdForm {
+    width: 350px;
+    height: 340px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -175px;
+    margin-top: -200px;
+    border: 1px solid #424242;
+    box-shadow: 0 0 5px 1px #FFFFFF;
+}
+
+#findPwdTitle h1 {
+    text-align: center;
+    text-decoration: underline;
+    font-family: 'Gothic A1', sans-serif;
+    font-size: 25px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.find_pwd_label {
+    position: relative;
+    left: 25px;
+    top: 23px;
+}
+
+.find_pwd_input {
+    position: relative;
+    width: 296px;
+    height: 34px;
+    font-size: 16px;
+    top: 25px;
+    left: 25px;
+}
+
+#findPwdTermsWrapper {
+    position: relative;
+    margin: auto;
+}
+
+.find_pwd_terms_text {
+    text-align: center;
+    padding: 1px;
+}
+
+.specification {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.find_pwd_button {
+    position: relative;
+    width: 300px;
+    height: 34px;
+    top: 60px;
+    left: 25px;
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 5px 0 0 gray;
+    background-color: #FAE100;
+    transition: 0.2s ease;
+    border: none;
+    border-radius: 3px 3px 1px 1px;
+}
+
+.find_pwd_button:active {
+    box-shadow: 0 3px 0 0 #424242;
+    background-color: #FBC02D;
+    transform: translate(0, 3px);
+}
+
+.cancel_find_pwd {
+    height: 60px;
+    background-color: #FAE100;
+}
+
+#cancelFindPwd {
+    font-size: 40px;
+    height: 46px;
+    width: 54px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    color: #9E9E9E;
+    background-color: transparent;
+    border-radius: 20px;
+    outline: none;
+}
+
+#cancelFindPwd:hover {
+    color: #424242;
+}
+
+#cancelFindPwd:active {
+    color: #424242;
+}
+
+#messageBox {
+    width: 50px;
+    height: 30px;
+    position: absolute;
+    left: 85px;
+    font-size: 30px;
+    top: -5px;
+    float: left;
+    color:#212121;
+}
+
+#messageBox a{
+	color:#212121;
+}
+
+#profileBox {
+    position: absolute;
+    right: -33px;
+    float: left;
+    width: 150px;
+    height: 30px;
+    top: -5px;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+#profileImgBox {
+    width: 30px;
+    height: 30px;
+    border-radius: 40px;
+    background: #EC407A;
+}
+
+#name {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    height: 30px;
+    top: 5px;
+    left: 40px;
+    font-size: 20px;
+     font-family: 'Nanum Gothic Coding', monospace;
+     font-weight: bold;
+}
+
+
+#profileBox #name a {
+    color: #212121;
+
+}
+#userLogOut{
+    position: absolute;
+    margin-right: 20px;
+    text-indent: 10px;
+    margin-top: 2px;
+    font-weight: bold;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+#userLogOut a{
+    color: #212121;
+    font-size: 16px;
+    font-weight: bold;
+}
+

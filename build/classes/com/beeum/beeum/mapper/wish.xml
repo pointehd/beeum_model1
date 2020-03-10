@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wish">
+	<select id="selectTourWish" parameterType="int" resultType="Wish">
+		select no_user noUser, content_num contentNum
+		from wish
+		where type='T'
+		and no_user = #{no}
+	</select>
+
+</mapper>  
+
+
+
+
+
+
+
+
+
+

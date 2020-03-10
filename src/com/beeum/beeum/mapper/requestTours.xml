@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="requestTours">
+	<insert id="insert" parameterType="RequestTour">
+		<selectKey order="BEFORE" resultType="int" keyProperty="noReqTour" >
+			select request_tours_seq.nextval noReqTour
+			from dual
+		</selectKey>
+		insert into request_tours(no_req_tour, no_user, no_target, no_city, start_date, end_date, meet_point, budget)
+		values(#{noReqTour}, #{noUser}, #{noTarget}, #{noCity}, #{startDate}, #{endDate}, #{meetPoint}, #{budget})
+	</insert>
+	
+		
+	
+	<select id="selectListByUser" parameterType="int" resultType="RequestTour">
+		select rt.no_req_tour noReqTour, rt.no_user noUser, rt.no_target noTarget, rt.no_city noCity, rt.start_date startDate, rt.end_date endDate, rt.meet_point meetPoint, rt.budget budget, u.name name, c.city, po.score score, po.cnt cnt, p.file_name fileName
+		from request_tours rt, users u, city c, (select sum(score)/count(ttr.no_ttr) score, u.no_user noUser, count(ttr.no_ttr) cnt
+												 from to_traveler_reviews ttr, payment p, users u
+												 where ttr.no_reservation(+) = p.no_reservation
+												 and u.no_user = p.no_user(+)
+												 group by u.no_user) po,
+												(SELECT p.no_user, pp.file_name
+									 			 FROM profile_pics pp, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+												 FROM profile_pics
+												 GROUP BY no_user) p
+												 WHERE pp.no_prof_pic = p.no_prof_pic) p
+		where rt.no_user =#{no}
+		and rt.no_user = u.no_user
+		and rt.no_city = c.no_city
+		and po.noUser =rt.no_user
+		and p.no_user = rt.no_user	
+	</select>
+	
+	
+	<select id="selectListTargetNo" parameterType="int" resultType="RequestTour">
+		select rt.no_req_tour noReqTour, rt.no_user noUser, rt.no_target noTarget, rt.no_city noCity, rt.start_date startDate, rt.end_date endDate, rt.meet_point meetPoint, rt.budget budget, u.name name, c.city, po.score score, po.cnt cnt, p.file_name fileName
+		from request_tours rt, users u, city c, (select sum(score)/count(ttr.no_ttr) score, u.no_user noUser, count(ttr.no_ttr) cnt
+												 from to_traveler_reviews ttr, payment p, users u
+												 where ttr.no_reservation(+) = p.no_reservation
+												 and u.no_user = p.no_user(+)
+												 group by u.no_user) po,
+												(SELECT p.no_user, pp.file_name
+									 			 FROM profile_pics pp, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+												 FROM profile_pics
+												 GROUP BY no_user) p
+												 WHERE pp.no_prof_pic = p.no_prof_pic) p
+		where rt.no_target =#{no}
+		and rt.no_user = u.no_user
+		and rt.no_city = c.no_city
+		and po.noUser =rt.no_user
+		and p.no_user = rt.no_user			
+	</select>
+	
+	<select id="selectList" resultType="RequestTour" parameterType="FilterVO">
+		
+		SELECT noReqTour, noUser, noTarget, noCity, startDate, endDate, meetPoint, budget, name, city, fileName, cnt, hive, nupCity, gender
+		FROM(SELECT noReqTour, noUser, noTarget, noCity, startDate, endDate, meetPoint, budget, name, city, fileName, cnt, hive, nupCity, gender, rownum r   
+		FROM(SELECT tc.no_req_tour noReqTour , u.no_user noUser, tc.no_target noTarget, tc.no_city noCity, tc.start_date startDate, tc.end_date endDate, 
+	   		   tc.meet_point meetPoint, tc.budget budget, u.name name, c.city city, pp.file_name fileName, tc.cnt cnt, tc.hive hive, c.no_up_city nupCity, pf.gender gender
+		FROM profiles pf, users u, city c, profile_pics pp, (SELECT rt.no_req_tour no_req_tour, rt.no_user no_user, rt.no_target no_target, rt.no_city no_city, 
+													        		rt.start_date start_date, rt.end_date end_date, rt.meet_point meet_point, rt.budget budget, reserv.cnt, reserv.hive
+												 	 		 FROM (SELECT ttr.no_reservation no_reservation, p.no_user no_user, count(ttr.no_ttr) cnt, sum(ttr.score)/count(ttr.no_ttr) hive
+	  											       	   		   FROM to_traveler_reviews ttr, payment p
+	 												  	   		   WHERE ttr.no_reservation = p.no_reservation(+)
+	  												   	   		   GROUP BY ttr.no_reservation, p.no_user) reserv, request_tours rt
+												 	 		 WHERE rt.no_user = reserv.no_user(+)
+												 	 		 AND no_target is null) tc, (SELECT no_req_tour 
+																			 	 		 FROM travelers_detail 
+																			 	 		 GROUP BY no_req_tour 
+																				 		 HAVING #{pax} >= SUM(pax)) pax, (SELECT no_req_tour 
+																				   						     		  	  FROM travelers_detail 
+																				   						     		  	  <if test="gender!=null">
+																											 		  	  WHERE gender IN(${gender}) 
+																											 		  	  </if>
+																											 		  	  GROUP BY no_req_tour) tg, (SELECT DISTINCT no_req_tour
+																																				 	 FROM request_theme
+																																				 	 <if test="theme!=null">
+																																					 WHERE theme IN (${theme})
+																																					 </if>
+																																					 ) rt
+		WHERE u.no_user = tc.no_user
+		AND pp.no_user = u.no_user
+		AND c.no_city = tc.no_city
+		AND pf.no_user = u.no_user
+		AND pax.no_req_tour = tc.no_req_tour
+		AND pax.no_req_tour = tg.no_req_tour
+		AND tg.no_req_tour = rt.no_req_tour
+		
+		<if test="start!=null">
+			 AND  tc.start_date >= #{start}
+		</if>
+		<if test="end!=null">
+			AND  #{end} >= tc.end_date
+		</if>
+		<if test="region!=null">
+			AND c.no_up_city IN (${region},293)
+		</if>
+		<if test="age>0">
+			AND tc.no_req_tour IN (SELECT DISTINCT no_req_tour FROM travelers_detail WHERE #{age} IN age)
+			<!-- AND tc.no_req_tour IN (SELECT DISTINCT no_req_tour FROM travelers_detail WHERE age = #{age}) -->
+		</if>
+		<if test="price>0">
+			 AND tc.budget >= #{price} 
+		</if>
+		ORDER BY 1 DESC))
+				  
+		WHERE r BETWEEN #{pstart} AND #{pend}
+		
+	</select>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

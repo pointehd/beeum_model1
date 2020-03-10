@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="profiles">
+	<select id="selectProfile" parameterType="int"  resultType="Profile">
+		SELECT p.no_user noUser, gender, birth_date birthDate, short_intro shortIntro, long_intro longIntro, point, honey, name, lo.cnt lReviewCnt, lo.score localScore, tr.cnt tReviewCnt, tr.score travelScore
+		FROM profiles p , users u, (select count(no_tlr) cnt, TRUNC(avg(course_score+price_score+manner_score+lang_score+match_score)/5) score, t.no_user
+									from to_local_reviews tlr, tours t
+									where tlr.no_tour = t.no_tour
+									group by t.no_user) lo,
+									(select count(no_ttr) cnt, avg(score) score, p.no_user
+									 from to_traveler_reviews ttr, payment p
+									 where ttr.no_reservation = p.no_reservation
+									 group by p.no_user) tr
+		WHERE p.no_user = #{no} 
+		AND p.no_user = u.no_user
+		and p.no_user = lo.no_user(+)
+		and p.no_user = tr.no_user(+)
+
+	</select>
+	
+	<select id="selectContacts" resultType="Contact" >
+	SELECT no_contact, no_user, type, account
+	FROM contacts
+	ORDER BY no_user
+	</select>
+	
+		<update id="update" parameterType="Profile">
+		update profiles
+		set gender = #{gender}, birth_date = #{birthDate}, short_intro = #{shortIntro}, long_intro = #{longIntro}, point = #{point}, honey = #{honey}
+		where no_user = #{noUser}
+	</update>
+	
+	<insert id="insert" parameterType="Profile">
+		insert into profiles(no_user, gender, birth_date, short_intro, long_intro, point, honey)
+		values(#{noUser}, #{gender}, #{birthDate}, #{shortIntro}, #{longIntro}, #{point}, #{honey})
+	</insert>
+	
+	<select id="hasUser" parameterType="int" resultType="int">
+		select count(*)
+		from profiles
+		where no_user = #{no}
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

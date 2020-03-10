@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="avalLang">
+
+	<select id="selectListString" resultType="String" parameterType="int">
+		select language
+		from languages l, aval_lang a
+		where l.no_lang = a.no_lang AND a.no_user = #{no}
+	</select>
+	
+	<select id="selectList" resultType="AvalLang" parameterType="int">
+		SELECT a.no_user, a.no_lang, l.language
+		FROM languages l, aval_lang a
+		WHERE l.no_lang = a.no_lang
+		AND no_user = #{no}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete aval_lang
+		where no_user = #{no}
+	</delete>
+	
+	<insert id="insert" parameterType="AvalLang">
+		insert into aval_lang(NO_AVAL_LANG,	NO_USER, NO_LANG)
+		values(aval_lang_seq.nextval, #{noUser}, #{noLang})
+	</insert>
+	
+	<!-- 수창 -->
+	<select id="avalLangCnt" resultType="int" parameterType="int">
+		SELECT COUNT(l.language) avalLangCnt
+		FROM languages l, (SELECT no_lang language
+						   FROM aval_lang
+						   WHERE no_user = #{noUser}) a
+		WHERE l.no_lang = a.language
+	</select>
+	<!-- 수창 -->	
+	
+	<select id="selectAvalLang" resultType="AvalLang" parameterType="int">
+	SELECT u.no_user noUser, u.name name, a.no_lang noLang, l.language language
+	FROM users u, aval_lang a, languages l
+	WHERE u.no_user = a.no_user
+	AND l.no_lang = a.no_lang
+	AND u.no_user = #{no}
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

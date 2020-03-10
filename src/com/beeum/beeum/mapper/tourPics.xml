@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tourPics">
+	<insert 
+		id="insert"
+		parameterType="TourPic"
+	>
+		INSERT INTO tour_pics(no_tour_pic, no_tour, type, file_name)
+		VALUES(tour_pics_seq.nextval, #{noTour}, #{type}, #{fileName})
+	</insert>
+	
+	<select id="selectOneDetailedTour" parameterType="int" resultType="String">
+		SELECT file_name
+		FROM tour_pics
+		WHERE no_tour= #{noTour} AND type='S'
+	</select>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

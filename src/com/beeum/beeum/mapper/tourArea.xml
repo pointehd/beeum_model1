@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tourArea">
+	<insert id="insert" parameterType="TourArea">
+		INSERT INTO tour_area(no_tour_area, no_tour, no_city)
+		VALUES(tour_area_seq.nextval, #{noTour}, #{noCity})
+	</insert>
+	
+	<select id="selectListDetailedTour" parameterType="int"
+		resultType="City"
+	>
+	SELECT c.city
+	FROM city c, tour_area ta
+	WHERE no_tour = #{noTour} AND ta.no_city = c.no_city
+	</select>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

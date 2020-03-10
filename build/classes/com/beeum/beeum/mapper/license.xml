@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="license">
+
+<select id="selectList" resultType="License" parameterType="int">
+	SELECT no_user, no_license, license
+	FROM license
+	WHERE no_user = #{no}
+	ORDER BY no_license
+</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="payment">
+		<!-- 수창 -->
+	<insert id="insert" parameterType="Payment">
+		INSERT INTO payment(no_reservation, no_user, 
+					no_tour, start_date, end_date, name, phone_num,
+ 					pay_method, used_honey, reg_date)
+		VALUES(payment_seq.nextval, #{noUser}, #{noTour}, #{startDate}, #{endDate}, 
+					#{name}, #{phoneNum},
+					#{payMethod}, #{used_honey}, systimestamp)
+	</insert>
+		<!-- 수창 -->
+	<select id="selectWeekTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM payment
+		WHERE reg_date BETWEEN systimestamp-7 AND systimestamp
+	</select>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

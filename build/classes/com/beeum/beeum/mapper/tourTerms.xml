@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tourTerms">
+	<insert id="insert"
+			parameterType="TourTerm"
+	>
+	INSERT INTO tour_terms(no_tour_terms, no_tour, type, content)
+	VALUES(tour_terms_seq.nextval, #{noTour}, #{type}, #{content})
+	</insert>
+	
+	<select id="selectListDetailedTour"
+		parameterType="int"
+		resultType="TourTerm"
+	>
+	SELECT no_tour_terms, no_tour, type, content
+	FROM tour_terms
+	WHERE no_tour = #{noTour}
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

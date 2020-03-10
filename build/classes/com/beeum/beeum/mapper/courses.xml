@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courses">
+	<!-- 수창 -->
+	<insert id="insert" parameterType="Course">
+		INSERT INTO courses(no_course, no_tour, no_course_category,
+							 title, file_name, content, demand_time)
+		VALUES(courses_seq.nextval, #{noTour}, #{noCourseCategory}, #{title}, #{fileName},
+							 #{content}, #{demandTime})
+	</insert>
+	
+	<select id="selectListDetailedTour" parameterType="int" resultType="Course">
+		SELECT c.title title, c.file_name fileName, c.content content,
+	  		c.demand_time demandTime, c.no_course_category noCourseCategory, cCate.category category
+		FROM courses c, course_categories cCate
+		WHERE c.no_tour = #{noTour} AND c.no_course_category = cCate.no_course_category
+	</select>
+	<!-- 수창 -->
+</mapper>  
+
+
+
+
+
+
+
+
+
+

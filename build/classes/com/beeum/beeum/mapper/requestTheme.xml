@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="requestTheme">
+	<insert id="insert" parameterType="RequestTheme">
+		insert into request_theme(no_req_theme, no_req_tour, theme)
+		values(request_theme_seq.nextval, #{noReqTour}, #{theme})
+	</insert>
+	
+	<select id="selectListByReqTour" parameterType="int" resultType="String">
+		select theme
+		from request_theme
+		where no_req_tour =#{no}
+	</select>
+	
+	<select id="selectList" parameterType="int" resultType="RequestTheme">
+		SELECT no_req_theme, no_req_tour, theme
+		FROM request_theme
+		WHERE no_req_tour = #{no}
+	</select>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

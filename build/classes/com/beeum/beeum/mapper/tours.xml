@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tours">
+	<select id="selectTotal" resultType="int">
+		SELECT count(*)
+		FROM tours
+	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="Tour">
+		SELECT no_tour noTour, no_user noUser, title, theme, tour_info tourInfo, gender, start_time startTime, end_time endTime, meet_point meetPoint, lat, lng, total_time totalTime, minimum, maximum, price
+		FROM tours 
+	</select>
+	
+	<select id="selectTourBox" parameterType="int" resultType="Tour">
+		select t.no_tour noTour, t.no_user noUser, t.theme theme, t.title title, t.price price, c.city city, profilePic, tourPic, u.name name, score, reviewCount
+		from tours t, users u, (SELECT p1.no_tour no_tour, city
+				 	  FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+										  FROM tour_area
+										  GROUP BY no_tour) t2,
+				 	  					 (select no_city, city
+			 							  from city) c	
+				 	  WHERE p1.no_tour = t2.no_tour
+				 	  and p1.no_city = c.no_city) c,
+					 (SELECT p1.file_name profilePic
+					  FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+										     FROM profile_pics 
+										     where no_user = #{no}
+										     GROUP BY no_user) p
+					  WHERE p1.no_prof_pic = p.no_prof_pic),
+					 (select tp.no_tour, tp.file_name tourPic
+					  from tour_pics tp, tours t
+					  where tp.type = 'S'
+					  and t.no_tour = tp.no_tour) tp,
+					 (select no_tour, avg(course_score + price_score + manner_score + lang_score + match_score)/100 score, count(no_tlr) reviewCount
+					  from (select no_tlr, no_reservation, course_score, price_score, manner_score, lang_score, match_score, t.no_tour
+					 	    from to_local_reviews tlr, tours t
+			    		  	where tlr.no_tour(+) = t.no_tour)
+					  group by no_tour) tlr
+		where t.no_user= #{no}
+		and t.no_tour=c.no_tour
+		and t.no_tour = tp.no_tour
+		and u.no_user = t.no_user
+		and tlr.no_tour = t.no_tour
+	</select>
+	
+	<insert id="insert" parameterType="Tour">
+		<selectKey order="BEFORE" keyProperty="noTour" resultType="int" >
+			select MAX(no_tour)+1
+			from tours
+		</selectKey>
+		INSERT INTO tours(no_tour, no_user, 
+			title, theme, tour_info, gender, start_time,
+			 end_time, meet_point, lat, lng, total_time,
+			  minimum, maximum, price)
+		VALUES(#{noTour}, #{noUser}, #{title}, #{theme}, #{tourInfo}, #{gender}, #{startTime}, #{endTime},
+		 #{meetPoint}, #{lat}, #{lng}, #{totalTime}, #{minimum}, #{maximum}, #{price})
+	</insert>
+	
+	<select id="selectDetailedTour" parameterType="int" resultType="Tour">
+	SELECT no_tour noTour, no_user noUser,
+	 	   title, theme, tour_info tourInfo, gender,
+	  	   start_time startTime, end_time endTime,
+	       meet_point meetPoint, lat, lng, total_time totalTime,
+	       minimum, maximum, price
+	FROM tours 
+	WHERE no_tour=#{noTour}
+	</select>
+	
+	<select id="selectMaxPrice" resultType="int">
+
+		SELECT MAX(price) maxPrice
+		FROM tours
+	
+	</select>
+	
+	<select id="selectMaxTime" resultType="int">
+
+		SELECT MAX(total_time) maxTime
+		FROM tours
+	
+	</select>
+	
+	
+	<select id="selectAllList" resultType="Tour">
+SELECT t.no_tour noTour, u.name name, t.theme theme, total_time totalTime, 
+		t.title title, t.price price, tlr.course_score courseScore, tlr.price_score priceScore, 
+		tlr.manner_score mannerScore, tlr.lang_score langScore, tlr.match_score matchScore, 
+		ta.no_city noCity, a.no_up_city noUpCity, c.city city, r.countNum countNum, 
+		tp.file_name tourPicFileName, up.file_name userPicFileName, 
+		bl.type userLevel
+FROM tours t, users u, to_local_reviews tlr, tour_area ta, city c, (SELECT t.no_tour, c.no_up_city
+																	FROM (SELECT t.no_tour, ta.no_city
+																			FROM tours t, tour_area ta
+																			WHERE t.no_tour = ta.no_tour) t,
+																		(SELECT c.no_city no_city ,uc.no_city no_up_city
+																		FROM city c, city uc
+																		WHERE c.no_up_city = uc.no_city) c
+																	WHERE t.no_city = c.no_city) a,
+																(SELECT COUNT(*) countNum, no_tour
+																FROM to_local_reviews
+																GROUP BY no_tour) r,
+																(SELECT no_tour, file_name
+																FROM tour_pics
+																WHERE type = 'S') tp,
+																(SELECT no_user, file_name
+																FROM profile_pics) up,
+																(SELECT no_user, type
+																FROM aval_bees
+																WHERE type != 'T') bl
+WHERE t.no_user = u.no_user AND t.no_tour = tlr.no_tour(+) 
+		AND t.no_tour = ta.no_tour AND ta.no_tour = a.no_tour AND c.no_city = a.no_up_city AND t.no_tour = r.no_tour(+) 
+		AND tp.no_tour = t.no_tour AND u.no_user = up.no_user 
+		AND u.no_user = bl.no_user
+	</select>
+	
+	<select id="selectFilterList" resultType="Tour" parameterType="Map">
+SELECT t.no_tour noTour, u.name name, t.theme theme, total_time totalTime, 
+		t.title title, t.price price, tlr.score,
+		ta.no_city noCity, a.no_up_city noUpCity, c.city city, r.countNum countNum, 
+		tp.file_name tourPicFileName, up.file_name userPicFileName, 
+		bl.type userLevel, t.minimum, t.maximum, t.total_time totalTime, t.gender gender, 
+		p.birth_date birthDate
+FROM tours t, users u, tour_area ta, city c, (SELECT t.no_tour, c.no_up_city
+												FROM (SELECT t.no_tour, ta.no_city
+												FROM tours t, tour_area ta
+												WHERE t.no_tour = ta.no_tour) t,
+												(SELECT c.no_city no_city ,uc.no_city no_up_city
+												FROM city c, city uc
+												WHERE c.no_up_city = uc.no_city) c
+												WHERE t.no_city = c.no_city) a,
+												(SELECT COUNT(*) countNum, no_tour
+												FROM to_local_reviews
+												GROUP BY no_tour) r,
+												(SELECT no_tour, file_name
+												FROM tour_pics
+												WHERE type = 'S') tp,
+												(SELECT p.no_user, p.file_name
+												FROM profile_pics p, (SELECT DISTINCT no_user, MIN(no_prof_pic) pp
+												FROM profile_pics
+												GROUP BY no_user) up
+												WHERE p.no_prof_pic = up.pp) up,
+												(SELECT no_user, type
+												FROM aval_bees
+												WHERE type != 'T') bl,
+												(SELECT DISTINCT no_tour, MIN(no_tlr) tlr, SUM(course_score + price_score + manner_score + lang_score + match_score) score
+												FROM to_local_reviews
+												GROUP BY no_tour) tlr,
+												(SELECT DISTINCT l.no_tour no_tour
+												FROM tour_lang l, (SELECT tl.no_tour, tl.no_lang noLang
+																FROM tour_lang tl, (SELECT no_lang, language
+																					FROM languages) l
+																WHERE tl.no_lang = l.no_lang AND tl.no_lang IN
+																<foreach item="lang" index="index" open="(" close=")" separator="," collection="languageList">
+																#{lang}
+																</foreach>
+																) tl
+												WHERE l.no_tour = tl.no_tour AND l.no_lang = tl.noLang) tl, 
+												(SELECT DISTINCT t.no_tour
+												FROM tours t, (SELECT no_tour, no_course_category 
+																FROM courses
+																WHERE no_course_category IN
+																<foreach item="food" index="index" open="(" close=")" separator="," collection="foodList">
+																#{food}
+																</foreach>
+																) fc
+												WHERE t.no_tour = fc.no_tour) fc,
+												(SELECT DISTINCT t.no_tour
+												FROM tours t, (SELECT no_tour, no_course_category 
+																FROM courses
+																WHERE no_course_category IN
+																<foreach item="trans" index="index" open="(" close=")" separator="," collection="transList">
+																#{trans}
+																</foreach>
+																) tc
+												WHERE t.no_tour = tc.no_tour) tc,
+												profiles p,
+												(SELECT DISTINCT u.no_user
+												FROM users u, (SELECT no_user, start_time, end_time, NO_SCHE_TIME
+																FROM schedule_time
+												<![CDATA[ 		WHERE start_time >= #{startTime} AND end_time <= #{endTime}) us ]]>
+												WHERE u.no_user = us.no_user) us
+
+WHERE t.no_user = u.no_user AND t.no_tour = tlr.no_tour(+) 
+		AND t.no_tour = ta.no_tour AND ta.no_tour = a.no_tour AND c.no_city = a.no_up_city AND t.no_tour = r.no_tour(+) 
+		AND tp.no_tour = t.no_tour AND u.no_user = up.no_user 
+		AND u.no_user = bl.no_user AND t.no_tour = tl.no_tour
+		AND t.no_tour = fc.no_tour AND t.no_tour = tc.no_tour
+		AND t.no_user = p.no_user AND t.no_user = us.no_user
+		AND t.theme IN
+		<foreach item="theme" collection="themeList" 
+		index="index" open="(" separator="," close=")">
+		#{theme}
+		</foreach> 
+		AND bl.type IN
+		<foreach item="level" collection="levelList" index="index" open="(" separator="," close=")">
+		#{level}
+		</foreach>
+		<if test="maximum != 0">
+		<![CDATA[  AND t.maximum >= #{maximum} AND t.minimum <= #{minimum} ]]>
+		</if>
+		<![CDATA[ AND t.price <= #{maxPrice} AND t.price >= #{minPrice} ]]>
+		  <if test='maxTime > 21600'>
+			<![CDATA[  AND t.total_time > 21600  ]]> 
+		</if>
+		<if test='21600 >= maxTime'>
+			<![CDATA[ AND t.total_time <= #{maxTime}  ]]> 
+		</if>
+		<if test="gender != ''">
+			AND t.gender = #{gender}
+		</if>
+		<if test="ageDate != 0">
+			<if test="ageDate == 70">
+			<![CDATA[  AND p.birth_date < #{oldDate} ]]> 
+			</if>
+			<if test="ageDate != 70">
+				AND p.birth_date BETWEEN #{oldDate} AND #{newDate} 
+			</if>
+		</if>
+		
+	</select>
+	
+		
+</mapper>  
+
+
+
+
+
+
+
+
+
+

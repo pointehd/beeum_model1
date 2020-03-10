@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="suggestTours">
+	<select id="selectByReqNo" parameterType="int" resultType="Tour">
+		select t.no_tour noTour, t.no_user noUser, t.theme theme, t.title title, t.price price, c.city city, profilePic, tourPic, u.name name, score, reviewCount
+		from suggest_tours st, tours t, users u, (SELECT p1.no_tour no_tour, city
+				 	  FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+										  FROM tour_area
+										  GROUP BY no_tour) t2,
+				 	  					 (select no_city, city
+			 							  from city) c	
+				 	  WHERE p1.no_tour = t2.no_tour
+				 	  and p1.no_city = c.no_city) c,
+					 (SELECT p.no_user, p1.file_name profilePic
+					  FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+										     FROM profile_pics 
+										     GROUP BY no_user) p
+					  WHERE p1.no_prof_pic = p.no_prof_pic) pro,
+					 (select tp.no_tour, tp.file_name tourPic
+					  from tour_pics tp, tours t
+					  where tp.type = 'S'
+					  and t.no_tour = tp.no_tour) tp,
+					 (select no_tour, avg(course_score + price_score + manner_score + lang_score + match_score)/100 score, count(no_tlr) reviewCount
+					  from (select no_tlr, no_reservation, course_score, price_score, manner_score, lang_score, match_score, t.no_tour
+					 	    from to_local_reviews tlr, tours t
+			    		  	where tlr.no_tour(+) = t.no_tour)
+					  group by no_tour) tlr
+		where t.no_tour=c.no_tour
+		and t.no_tour = tp.no_tour
+		and u.no_user = t.no_user
+		and tlr.no_tour = t.no_tour
+		and t.no_user = pro.no_user
+		and st.no_tour = t.no_tour
+		and st.no_req_tour = #{no}
+	</select>
+	
+	<select id="selectOnlyMyReq" parameterType="Tour" resultType="Tour" >
+		select t.no_tour noTour, t.no_user noUser, t.theme theme, t.title title, t.price price, c.city city, profilePic, tourPic, u.name name, score, reviewCount
+		from suggest_tours st, tours t, users u, (SELECT p1.no_tour no_tour, city
+				 	  FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+										  FROM tour_area
+										  GROUP BY no_tour) t2,
+				 	  					 (select no_city, city
+			 							  from city) c	
+				 	  WHERE p1.no_tour = t2.no_tour
+				 	  and p1.no_city = c.no_city) c,
+					 (SELECT p.no_user, p1.file_name profilePic
+					  FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+										     FROM profile_pics 
+										     GROUP BY no_user) p
+					  WHERE p1.no_prof_pic = p.no_prof_pic) pro,
+					 (select tp.no_tour, tp.file_name tourPic
+					  from tour_pics tp, tours t
+					  where tp.type = 'S'
+					  and t.no_tour = tp.no_tour) tp,
+					 (select no_tour, avg(course_score + price_score + manner_score + lang_score + match_score)/100 score, count(no_tlr) reviewCount
+					  from (select no_tlr, no_reservation, course_score, price_score, manner_score, lang_score, match_score, t.no_tour
+					 	    from to_local_reviews tlr, tours t
+			    		  	where tlr.no_tour(+) = t.no_tour)
+					  group by no_tour) tlr
+		where t.no_tour=c.no_tour
+		and t.no_tour = tp.no_tour
+		and u.no_user = t.no_user
+		and tlr.no_tour = t.no_tour
+		and t.no_user = pro.no_user
+		and st.no_tour = t.no_tour
+		and st.no_req_tour = #{noReqTour}
+		and t.no_user = #{noUser}	
+	</select>
+	
+	<select id="selectListByUserNo" parameterType="int" resultType="RequestTour">
+		select rt.no_req_tour noReqTour, rt.no_user noUser, rt.no_target noTarget, rt.no_city noCity, rt.start_date startDate, rt.end_date endDate, rt.meet_point meetPoint, rt.budget budget, u.name name, c.city, po.score score, po.cnt cnt, p.file_name fileName
+		from users u2,tours t, suggest_tours st, request_tours rt, users u, city c, (select sum(score)/count(ttr.no_ttr) score, u.no_user noUser, count(ttr.no_ttr) cnt
+												 from to_traveler_reviews ttr, payment p, users u
+												 where ttr.no_reservation(+) = p.no_reservation
+												 and u.no_user = p.no_user(+)
+												 group by u.no_user) po,
+												(SELECT p.no_user, pp.file_name
+									 			 FROM profile_pics pp, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+												 FROM profile_pics
+												 GROUP BY no_user) p
+												 WHERE pp.no_prof_pic = p.no_prof_pic) p
+		where u2.no_user=#{no}
+		and rt.no_user = u.no_user
+		and rt.no_city = c.no_city
+		and po.noUser =rt.no_user
+		and p.no_user = rt.no_user
+		and rt.no_req_tour = st.no_req_tour
+		and st.no_tour =t.no_tour
+		and t.no_user = u2.no_user	
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

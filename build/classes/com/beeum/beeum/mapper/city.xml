@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="city">
+	<select id="selectCityList" parameterType="int" resultType="City">
+				
+		SELECT *
+		FROM my_area m,
+		city c
+		WHERE m.no_city = c.no_city
+		and m.no_user = #{no}	
+	</select>
+	
+	<select id="selectBigList" resultType="City">
+		select no_city noCity, city
+		from city
+		where no_up_city is null
+	</select>
+
+	<select id="selectOne" parameterType="String" resultType="int">
+		SELECT no_city noCity
+		FROM city
+		WHERE city = #{city}
+	</select>	
+	
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="users">
+
+	<select id="selectLogin" resultType = "User" parameterType="User">
+		SELECT u.no_user noUser, email, password, name, file_name fileName
+		FROM (SELECT p.no_user, pp.file_name
+		FROM profile_pics pp, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+		FROM profile_pics
+		GROUP BY no_user) p
+		WHERE pp.no_prof_pic = p.no_prof_pic) p, users u
+		WHERE p.no_user(+) = u.no_user
+		AND email = #{email} and password = #{password}
+	</select>
+	
+	<select id="selectOne" resultType="User" parameterType="int">
+		SELECT u.no_user noUser, email, password, name, file_name fileName
+		FROM (SELECT p.no_user, pp.file_name
+		FROM profile_pics pp, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+		FROM profile_pics
+		GROUP BY no_user) p
+		WHERE pp.no_prof_pic = p.no_prof_pic) p, users u
+		WHERE p.no_user(+) = u.no_user
+		AND u.no_user = #{no}
+	</select>
+	
+	<insert id="insert" parameterType="User">
+		INSERT INTO users(no_user, email, password, name)
+		VALUES (users_seq.nextval, #{email}, #{password}, #{name})
+	</insert>
+	
+	<select id="selectUser" parameterType="int" resultType="User">
+		select no_user noUser, name
+		from users
+		where no_user = #{no}
+	</select>
+	
+		<update id="updateName" parameterType="User">
+		update users
+		set name = #{name}
+		where no_user = #{noUser}
+		
+	</update>
+	
+		<select id="selectProfile" resultType="User" parameterType="PageVO">
+SELECT no_user noUser, name,  age, gender, file_name fileName, no_city, city, lCnt, tlrScore, tCnt, ttrScore
+FROM(SELECT no_user, name,  age, gender, file_name, no_city, city, ROWNUM r, lCnt, tlrScore, tCnt, ttrScore
+FROM(SELECT u.no_user, u.name,  u.age, u.gender, u.file_name, p.no_city, p.city, tlr_score tlrScore, lCnt, tCnt, ttrScore
+FROM (select AVG(ttr.score) ttrScore, u.no_user, count(ttr.no_ttr) tCnt
+from to_traveler_reviews ttr, payment p, users u
+WHERE ttr.no_reservation(+) = p.no_reservation
+and u.no_user = p.no_user(+)
+GROUP BY u.no_user) ttr, (select u.no_user, count(tlr.no_tlr) lCnt,  AVG((course_score + price_score + manner_score + lang_score + match_score)/5) tlr_score
+from tours t, users u, to_local_reviews tlr
+where u.no_user = t.no_user(+)
+and tlr.no_tour(+) = t.no_tour
+group by u.no_user) tlr, (SELECT u.no_city, u.no_user, c.city
+FROM city c, (SELECT MAX(no_city) no_city, no_user
+FROM my_area
+GROUP BY no_user) u
+WHERE c.no_city = u.no_city) p, (SELECT u.no_user, u.name, NVL(TRUNC((sysdate-p.birth_date)/365),0) age, p.gender, u.file_name
+FROM profiles p, (SELECT u.no_user, u.name, p.no_prof_pic, p.file_name
+FROM users u, (SELECT p.no_user, p.no_prof_pic, p.file_name
+FROM profile_pics p, (SELECT MIN(no_prof_pic) profile_pic, no_user
+					FROM profile_pics
+					GROUP BY no_user) up
+WHERE up.profile_pic = p.no_prof_pic) p 
+WHERE u.no_user = p.no_user) u 
+WHERE p.no_user = u.no_user) u
+WHERE p.no_user = u.no_user
+AND tlr.no_user(+) = u.no_user
+AND ttr.no_user(+) = u.no_user
+ORDER BY u.no_user ASC))
+WHERE r between #{start} and #{end}
+	
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tourLang">
+	<insert id="insert"
+		parameterType="TourLang"
+	>
+		INSERT INTO tour_lang(no_tour_lang, no_tour, no_lang)
+		VALUES(tour_lang_seq.nextval, #{noTour}, #{noLang})
+	</insert>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

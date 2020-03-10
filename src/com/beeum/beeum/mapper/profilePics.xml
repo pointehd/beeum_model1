@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="profilePics">
+	<select id="selectList" parameterType="int" resultType="ProfilePic">
+		SELECT p.no_user, pp.file_name
+	   FROM profiles p, profile_pics pp
+		WHERE   p.no_user = pp.no_user
+		AND p.no_user = #{no}
+	</select>
+	
+	<insert id="insert" parameterType="ProfilePic">
+		INSERT INTO profilePics(no_prof_pic, no_user, file_name)
+		VALUES (profilePics_seq.nextval, #{no}, #{fileName})
+	</insert>
+</mapper>  
+
+
+
+
+
+
+
+
+
+

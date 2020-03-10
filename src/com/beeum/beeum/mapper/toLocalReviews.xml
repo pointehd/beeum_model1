@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="toLocalReviews">
+	<select id="selectTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM to_local_reviews
+	</select>
+	
+	<select id="selectList" resultType="ToLocalReview" parameterType="PageVO">
+		
+		SELECT lNoUser, lName, lFileName, content, tNoUser, tName, tFileName, title, theme, city, regDate, courseScore, priceScore, mannerScore, langScore, matchScore, hive, rFileName, noTlr
+		FROM(SELECT lNoUser, lName, lFileName, content, tNoUser, tName, tFileName, title, theme, city, regDate, courseScore, priceScore, mannerScore, langScore, matchScore, hive, rFileName, noTlr, rownum r
+			 FROM(SELECT u.no_user lNoUser, u.name lName, pro1.lFileName lFileName, tlr.content content, u1.no_user tNoUser, u1.name tName, pro2.tFileName tFileName, t.title title, t.theme theme, c.city city, tlr.reg_date regDate,
+       					 course_score courseScore, price_Score priceScore, manner_Score mannerScore, lang_Score langScore, match_Score matchScore, (course_score + price_Score + manner_Score + lang_Score + match_Score) hive, rp.file_name rFileName, tlr.no_tlr noTlr
+				  FROM to_local_reviews tlr, tours t, users u, payment p, users u1,(SELECT p1.no_tour no_tour, city, c.no_up_city
+                                                                  					FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+                                                                                      					FROM tour_area
+                                                                                      					GROUP BY no_tour) t2,(SELECT no_city, city, no_up_city
+                                                                                                            				  FROM city) c
+                                                                 				    WHERE p1.no_tour = t2.no_tour
+                                                                  					AND p1.no_city = c.no_city) c, (SELECT p1.no_user, p1.file_name lFileName
+                                                                                                  					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                         				   FROM profile_pics
+                                                                                                                         				   GROUP BY no_user) p
+                                                                                                  					WHERE p1.no_prof_pic = p.no_prof_pic) pro1,(SELECT p1.no_user, p1.file_name tFileName
+                                                                                                                                              					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                                                                     				   FROM profile_pics
+                                                                                                                                                                     				   GROUP BY no_user) p
+                                                                                                                                              										   WHERE p1.no_prof_pic = p.no_prof_pic) pro2, review_pics rp
+		WHERE tlr.no_tour = t.no_tour
+		AND t.no_user = u.no_user
+		AND p.no_reservation = tlr.no_reservation
+		AND p.no_user = u1.no_user
+		AND c.no_tour = t.no_tour
+		AND pro1.no_user = u.no_user
+		AND pro2.no_user = u1.no_user
+		AND rp.no_ttr is null
+		AND rp.no_reservation(+) = p.no_reservation
+					
+				  <if test="region!=null">	                  
+                  	AND c.no_up_city IN (${region})
+                  </if>
+                  
+                  <if test="theme!=null">
+                  	AND t.theme IN (${theme})
+                  </if>
+                  
+                  <if test="order=='regDate'">
+                  	ORDER BY regDate DESC 
+                  </if> 
+                  
+                  <if test="order=='hive'">
+                  	ORDER BY hive DESC 
+                  </if>))
+                  
+		WHERE r BETWEEN #{start} AND #{end}
+	
+	</select>
+	
+<!-- 	<select id="selectList" resultType="ToLocalReview" parameterType="PageVO">
+	
+		SELECT noTlr, title, tFileName, regdate, tName, Content, courseScore, priceScore, mannerScore, langScore, matchScore, hive, lFileName, lName, rFileName, upCity
+		FROM(SELECT noTlr, title, tFileName, regdate, tName, Content, courseScore, priceScore, mannerScore, langScore, matchScore, hive, lFileName, lName, rFileName,upCity, rownum r
+			 FROM(SELECT tlr.no_tlr noTlr, t.title, up.file_name tFileName, tlr.reg_date regdate, u.name tName, tlr.content Content, 
+			   			 tlr.course_score courseScore, tlr.price_Score priceScore, tlr.manner_Score mannerScore,
+		 				 tlr.lang_Score langScore, tlr.match_Score matchScore, (tlr.course_score + tlr.price_Score + tlr.manner_Score + tlr.lang_Score + tlr.match_Score) hive, lup.file_name lFileName,  lu.name lName, rp.file_name rFileName, a.no_up_city upCity
+				  FROM to_local_reviews tlr, tours t, users u,payment p, review_pics rp, (SELECT p.no_user no_user, p.file_name file_name
+																						  FROM profile_pics p, (SELECT no_user no_user, MIN(no_prof_pic) no_prof_pic
+																											    FROM profile_pics 
+																												GROUP BY no_user) up
+																						  WHERE p.no_prof_pic = up.no_prof_pic) up,
+					  users lu, (SELECT p.no_user no_user, p.file_name file_name
+								 FROM profile_pics p, (SELECT no_user no_user, MIN(no_prof_pic) no_prof_pic
+													   FROM profile_pics 
+													   GROUP BY no_user) up
+								 WHERE p.no_prof_pic = up.no_prof_pic) lup,
+								(SELECT t.no_tour, c.no_up_city
+								FROM (SELECT t.no_tour, ta.no_city
+								FROM tours t, tour_area ta
+								WHERE t.no_tour = ta.no_tour) t,
+								(SELECT c.no_city no_city ,uc.no_city no_up_city
+								FROM city c, city uc
+								WHERE c.no_up_city = uc.no_city) c
+								WHERE t.no_city = c.no_city) a
+				  WHERE tlr.no_tour = t.no_tour
+				  AND p.no_tour = t.no_tour
+				  AND p.no_user = u.no_user
+				  AND rp.no_tlr IS NOT NULL
+				  AND rp.no_reservation = p.no_reservation
+				  AND up.no_user = u.no_user
+				  AND t.no_user = lu.no_user
+				  AND lu.no_user = lup.no_user
+                  AND a.no_tour = t.no_tour
+					
+				  <if test="cityNos!=null">	                  
+                  	AND a.no_up_city IN (${cityNos})
+                  </if>
+                  
+                  <if test="themes!=null">
+                  	AND t.theme IN (${themes})
+                  </if>
+                  
+                  ORDER BY 1 DESC))
+                  
+		WHERE r BETWEEN #{start} AND #{end}
+	
+	</select> -->
+	
+	<select id="selectGetterReviews" parameterType="int" resultType="Review">
+		  SELECT u.no_user getterNo, u.name getterName, pro1.lFileName getterFile, tlr.content content, u1.no_user senderNo, u1.name senderName, pro2.tFileName senderFile, t.title title, t.theme theme, c.city city, tlr.reg_date regDate,
+ 				 course_score courseScore, price_Score priceScore, manner_Score mannerScore, lang_Score langScore, match_Score matchScore, (course_score + price_Score + manner_Score + lang_Score + match_Score) hive, rp.file_name tourFile
+		  FROM to_local_reviews tlr, tours t, users u, payment p, users u1,(SELECT p1.no_tour no_tour, city, c.no_up_city
+                                                                  					FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+                                                                                      					FROM tour_area
+                                                                                      					GROUP BY no_tour) t2,(SELECT no_city, city, no_up_city
+                                                                                                            				  FROM city) c
+                                                                 				    WHERE p1.no_tour = t2.no_tour
+                                                                  					AND p1.no_city = c.no_city) c, (SELECT p1.no_user, p1.file_name lFileName
+                                                                                                  					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                         				   FROM profile_pics
+                                                                                                                         				   GROUP BY no_user) p
+                                                                                                  					WHERE p1.no_prof_pic = p.no_prof_pic) pro1,(SELECT p1.no_user, p1.file_name tFileName
+                                                                                                                                              					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                                                                     				   FROM profile_pics
+                                                                                                                                                                     				   GROUP BY no_user) p
+                                                                                                                                              										   WHERE p1.no_prof_pic = p.no_prof_pic) pro2, review_pics rp
+		WHERE tlr.no_tour = t.no_tour
+		AND t.no_user = u.no_user
+		AND p.no_reservation = tlr.no_reservation
+		AND p.no_user = u1.no_user
+		AND c.no_tour = t.no_tour
+		AND pro1.no_user = u.no_user
+		AND pro2.no_user = u1.no_user
+		AND rp.no_ttr is null
+		AND rp.no_reservation(+) = p.no_reservation
+		AND u.no_user = #{no}
+		ORDER BY 1 DESC
+	</select>
+
+	<select id="selectSenderReviews" parameterType="int" resultType="Review">
+		  SELECT u.no_user getterNo, u.name getterName, pro1.lFileName getterFile, tlr.content content, u1.no_user senderNo, u1.name senderName, pro2.tFileName senderFile, t.title title, t.theme theme, c.city city, tlr.reg_date regDate,
+ 				 course_score courseScore, price_Score priceScore, manner_Score mannerScore, lang_Score langScore, match_Score matchScore, (course_score + price_Score + manner_Score + lang_Score + match_Score) hive, rp.file_name tourFile
+		  FROM to_local_reviews tlr, tours t, users u, payment p, users u1,(SELECT p1.no_tour no_tour, city, c.no_up_city
+                                                                  					FROM tour_area p1, (SELECT no_tour, MIN(no_tour_area) no_tour_area
+                                                                                      					FROM tour_area
+                                                                                      					GROUP BY no_tour) t2,(SELECT no_city, city, no_up_city
+                                                                                                            				  FROM city) c
+                                                                 				    WHERE p1.no_tour = t2.no_tour
+                                                                  					AND p1.no_city = c.no_city) c, (SELECT p1.no_user, p1.file_name lFileName
+                                                                                                  					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                         				   FROM profile_pics
+                                                                                                                         				   GROUP BY no_user) p
+                                                                                                  					WHERE p1.no_prof_pic = p.no_prof_pic) pro1,(SELECT p1.no_user, p1.file_name tFileName
+                                                                                                                                              					FROM profile_pics p1, (SELECT no_user, MIN(no_prof_pic) no_prof_pic
+                                                                                                                                                                     				   FROM profile_pics
+                                                                                                                                                                     				   GROUP BY no_user) p
+                                                                                                                                              										   WHERE p1.no_prof_pic = p.no_prof_pic) pro2, review_pics rp
+		WHERE tlr.no_tour = t.no_tour
+		AND t.no_user = u.no_user
+		AND p.no_reservation = tlr.no_reservation
+		AND p.no_user = u1.no_user
+		AND c.no_tour = t.no_tour
+		AND pro1.no_user = u.no_user
+		AND pro2.no_user = u1.no_user
+		AND rp.no_ttr is null
+		AND rp.no_reservation(+) = p.no_reservation
+		AND u1.no_user = #{no}
+		ORDER BY 1 DESC
+	</select>	
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

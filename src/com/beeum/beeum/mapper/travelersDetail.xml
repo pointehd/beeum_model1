@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="travelersDetail">
+	<insert id="insert" parameterType="TravelersDetail">
+		insert into travelers_detail(no_trav_detail, no_req_tour, gender, age, pax)
+		values(travelers_detail_seq.nextval, #{noReqTour}, #{gender}, #{age}, #{pax})
+	</insert>
+	
+	<select id="selectListByReqTour" resultType="TravelersDetail" parameterType="int">
+		select no_trav_detail noTravDetail, no_req_tour noReqTour, gender, age, pax
+		from travelers_detail
+		where no_req_tour = #{no}
+	</select>
+	
+	<select id="selectList" resultType="TravelersDetail" parameterType="int">
+		SELECT age, gender, pax
+		FROM travelers_detail
+		WHERE no_req_tour = #{no}
+	</select>
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+

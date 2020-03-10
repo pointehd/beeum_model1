@@ -1,5 +1,5 @@
-#  프로젝트명 : 세모요_세상의 모든요리
-> 공부를 목적으로 Model1 방식으로 개발 진행
+#  프로젝트명 : Beeum_Between you and me
+공부를 목적으로 Model1 방식으로 개발 진행
 
 > ## 프로젝트 기간 및 인원
 > 	- 2018.10.7 ~ 2019.11.29
@@ -35,4 +35,4 @@
 - AJAX를 이용한 서버 측과 클라이언트측간의 비동기식 데이터 교환 기술
 
 ## DB 설계 ERD
-[pdf](https://github.com/pointehd/beeum/blob/master/WebContent/file/DBslice.pdf)
+[pdf](https://github.com/pointehd/beeum_model1/blob/master/WebContent/file/DBslice.pdf)
